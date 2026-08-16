@@ -1,0 +1,14 @@
+{
+    "required": false,
+    "minVersion": "0.7.11",
+    "package": "com.glennfo.ssl.mixin",
+    "compatibilityLevel": "JAVA_8",
+    "mixins": [],
+    "client": [
+        "MixinEntityRenderer",
+        "MixinRenderGlobal",
+        "MixinItemRenderer",
+        "MixinGuiVideoSettings"
+    ],
+    "server": []
+}

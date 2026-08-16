@@ -1,0 +1,71 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle'
+
+version = project.mod_version
+group = 'com.glennfo.ssl'
+archivesBaseName = 'simpleton-shader-loader'
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+
+minecraft {
+    mappings channel: 'snapshot', version: '20171003-1.12'
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.console.level', 'debug'
+        }
+    }
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
+    compileOnly files('/home/glenn/Documents/curseforge/minecraft/Instances/Dummy 101/mods/!mixinbooter-10.7.jar')
+}
+
+jar {
+    manifest {
+        attributes([
+            'MixinConfigs'               : 'ssl.mixins.json',
+            'FMLCorePlugin'              : 'com.glennfo.ssl.asm.SSLCorePlugin',
+            'FMLCorePluginContainsFMLMod': 'true'
+        ])
+    }
+}
+
+jar.finalizedBy('reobfJar')
+
+task deploy {
+    dependsOn build
+    doLast {
+        copy {
+            from "build/libs/simpleton-shader-loader-${version}.jar"
+            into '/home/glenn/Documents/curseforge/minecraft/Instances/Dummy 101/mods'
+        }
+        println "[DEPLOY] simpleton-shader-loader → Dummy 101"
+    }
+}
+build.finalizedBy(deploy)
+
+processResources {
+    inputs.property 'version', project.version
+    inputs.property 'mcversion', '1.12.2'
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        expand 'version': project.version, 'mcversion': '1.12.2'
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}

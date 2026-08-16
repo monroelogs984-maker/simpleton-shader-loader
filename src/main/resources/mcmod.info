@@ -1,0 +1,10 @@
+[{
+    "modid": "ssl",
+    "name": "Simpleton's Shader Loader",
+    "description": "Open-source shader loader for Minecraft 1.12.2. Supports OptiFine-format shader packs.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "authorList": ["glennfo"],
+    "dependencies": []
+}]
